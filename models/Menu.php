@@ -7,7 +7,10 @@
  */
 
 namespace sokyrko\yii2menu\models;
-use yii\db\ActiveRecord;
+
+use yii\db\ActiveQueryInterface;
+use yii\mongodb\ActiveQuery;
+use yii\mongodb\ActiveRecord;
 
 /**
  * Class Menu
@@ -38,12 +41,12 @@ class Menu extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQueryInterface|ActiveQuery
      */
     public function getItems()
     {
         return $this->hasMany(MenuItem::className(), ['menu_id' => 'id'])
-                    ->onCondition(['parent_id' => null])
+                    ->where(['parent_id' => null])
                     ->orderBy(['position' => SORT_ASC]);
     }
 }

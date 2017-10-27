@@ -9,7 +9,7 @@
 namespace sokyrko\yii2menu\models;
 
 use yii\base\Model;
-use yii\db\ActiveQuery;
+use yii\mongodb\ActiveQuery;
 
 /**
  * Class MenuSearch

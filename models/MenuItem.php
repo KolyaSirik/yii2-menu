@@ -7,7 +7,10 @@
  */
 
 namespace sokyrko\yii2menu\models;
-use yii\db\ActiveRecord;
+
+use yii\db\ActiveQueryInterface;
+use yii\mongodb\ActiveQuery;
+use yii\mongodb\ActiveRecord;
 
 /**
  * Class MenuItem
@@ -46,7 +49,7 @@ class MenuItem extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQueryInterface|ActiveQuery
      */
     public function getMenu()
     {
@@ -54,7 +57,7 @@ class MenuItem extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQueryInterface|ActiveQuery
      */
     public function getParent()
     {
@@ -62,7 +65,7 @@ class MenuItem extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQueryInterface|ActiveQuery
      */
     public function getChildren()
     {
