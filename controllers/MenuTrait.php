@@ -29,7 +29,7 @@ trait MenuTrait
         $searchModel = new MenuSearch();
         $searchModel->load(\Yii::$app->request->queryParams);
 
-        return $this->render('@vendor/sokyrko/yii2-menu/views/menu/index', [
+        return $this->render('@vendor/kolyasiryk/yii2-menu-mongo/views/menu/index', [
             'searchModel' => $searchModel,
             'dataProvider' => new ActiveDataProvider([
                 'query' => $searchModel->search(),
@@ -47,7 +47,7 @@ trait MenuTrait
             return $this->redirect(['menu/index']);
         }
 
-        return $this->render('@vendor/sokyrko/yii2-menu/views/menu/create', [
+        return $this->render('@vendor/kolyasiryk/yii2-menu-mongo/views/menu/create', [
             'model' => $model,
         ]);
     }
@@ -61,14 +61,14 @@ trait MenuTrait
             return $this->redirect(['menu/index']);
         }
 
-        return $this->render('@vendor/sokyrko/yii2-menu/views/menu/update', [
+        return $this->render('@vendor/kolyasiryk/yii2-menu-mongo/views/menu/update', [
             'model' => $model,
         ]);
     }
 
     public function actionChildren($parentId)
     {
-        return $this->render('@vendor/sokyrko/yii2-menu/views/menu/children', [
+        return $this->render('@vendor/kolyasiryk/yii2-menu-mongo/views/menu/children', [
             'parent' => $this->getItem($parentId),
         ]);
     }
