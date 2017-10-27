@@ -10,21 +10,16 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist sokyrko/yii2-menu "*"
+php composer.phar require --prefer-dist kolyasiryk/yii2-menu-mongo "*"
 ```
 
 or add
 
 ```
-"sokyrko/yii2-menu": "*"
+"kolyasiryk/yii2-menu-mongo": "*"
 ```
 
 to the require section of your `composer.json` file.
-
-Run migration
-```
-./yii migrate/up --migrationPath=@vendor/sokyrko/yii2-menu/migrations
-```
 
 Create controllers and include menu and menu-item traits. For example:
 
