@@ -112,15 +112,4 @@ class MenuItem extends ActiveRecord
 
         return parent::beforeSave($insert);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function afterFind()
-    {
-        parent::afterFind();
-
-        $this->menuId = (string) $this->menuId;
-        $this->parentId = (string) $this->parentId;
-    }
 }
