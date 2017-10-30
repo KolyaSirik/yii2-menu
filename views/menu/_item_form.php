@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 if ($item->id) {
     $action = ['menu-item/update', 'id' => $item->id];
 } else {
-    $action = ['menu-item/create', 'menuId' => $item->menu_id, 'parentId' => $item->parent_id];
+    $action = ['menu-item/create', 'menuId' => $item->menuId, 'parentId' => $item->parentId];
 }
 
 ?>

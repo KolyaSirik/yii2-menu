@@ -16,9 +16,9 @@ $this->title = 'Update menu';
 <div class="row">
     <div class="col-md-1 col-xs-12">
         <?php if ($parent->parent) : ?>
-            <?= Html::a('Back', ['menu/children', 'parentId' => $parent->parent_id], ['class' => 'btn btn-danger']) ?>
+            <?= Html::a('Back', ['menu/children', 'parentId' => (string) $parent->parentId], ['class' => 'btn btn-danger']) ?>
         <?php elseif ($parent->menu) : ?>
-            <?= Html::a('Back', ['menu/update', 'id' => $parent->menu_id], ['class' => 'btn btn-danger']) ?>
+            <?= Html::a('Back', ['menu/update', 'id' => (string) $parent->menuId], ['class' => 'btn btn-danger']) ?>
         <?php endif; ?>
     </div>
     <div class="col-md-8 col-xs-12">

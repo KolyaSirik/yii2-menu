@@ -8,6 +8,7 @@
 
 namespace sokyrko\yii2menu\models;
 
+use MongoDB\BSON\ObjectID;
 use yii\db\ActiveQueryInterface;
 use yii\mongodb\ActiveQuery;
 use yii\mongodb\ActiveRecord;
@@ -15,7 +16,7 @@ use yii\mongodb\ActiveRecord;
 /**
  * Class Menu
  * @package sokyrko\yii2menu\models
- * @property integer $id
+ * @property ObjectID $_id
  * @property string $name
  * @property MenuItem[] $items
  */
@@ -35,7 +36,18 @@ class Menu extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public function attributes()
+    {
+        return [
+            '_id',
+            'name',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function collectionName()
     {
         return 'menus';
     }
@@ -45,8 +57,16 @@ class Menu extends ActiveRecord
      */
     public function getItems()
     {
-        return $this->hasMany(MenuItem::className(), ['menu_id' => 'id'])
-                    ->where(['parent_id' => null])
-                    ->orderBy(['position' => SORT_ASC]);
+        return $this->hasMany(MenuItem::className(), ['menuId' => '_id'])
+            ->where(['parentId' => null])
+            ->orderBy(['position' => SORT_ASC]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return (string) $this->_id;
     }
 }

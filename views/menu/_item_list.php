@@ -53,7 +53,7 @@ Modal::begin([
 ]);
 
 echo $this->render('_item_form', [
-    'item' => new MenuItem(['menu_id' => $model->id, 'parent_id' => isset($parent) ? $parent->id : null]),
+    'item' => new MenuItem(['menuId' => $model->id, 'parentId' => isset($parent) ? $parent->id : null]),
 ]);
 
 Modal::end();

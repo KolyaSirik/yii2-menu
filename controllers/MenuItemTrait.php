@@ -37,7 +37,7 @@ trait MenuItemTrait
      */
     public function actionCreate($menuId, $parentId = null)
     {
-        $model = new MenuItem(['menu_id' => $menuId, 'parent_id' => $parentId]);
+        $model = new MenuItem(['menuId' => $menuId, 'parentId' => $parentId]);
 
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
             if ($parentId) {
@@ -59,10 +59,10 @@ trait MenuItemTrait
         $model = $this->getItem($id);
 
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            if ($parent = $model->parent_id) {
+            if ($parent = $model->parentId) {
                 return $this->redirect(['menu/children', 'parentId' => $parent]);
             } else {
-                return $this->redirect(['menu/update', 'id' => $model->menu_id]);
+                return $this->redirect(['menu/update', 'id' => $model->menuId]);
             }
         }
 
@@ -80,15 +80,13 @@ trait MenuItemTrait
          * @var $menuItems MenuItem[]
          */
         $menuItems = MenuItem::find()->andWhere([
-            'parent_id' => $toMove->parent_id,
-            'menu_id' => $toMove->menu_id,
+            'parentId' => $toMove->parentId,
+            'menuId' => $toMove->menuId,
         ])->orderBy(['position' => SORT_ASC])->all();
 
         $key = array_search($toMove, $menuItems);
         array_splice($menuItems, $key, 1);
         array_splice($menuItems, $newIndex, 0, [$toMove]);
-
-        $transaction = \Yii::$app->db->beginTransaction();
 
         try {
             foreach ($menuItems as $idx => $menuItem) {
@@ -97,9 +95,7 @@ trait MenuItemTrait
                     throw new ErrorException(Json::encode($menuItem->getErrors()));
                 }
             }
-            $transaction->commit();
         } catch (\Exception $e) {
-            $transaction->rollBack();
             return ['errors' => $e->getMessage()];
         }
 
@@ -107,8 +103,8 @@ trait MenuItemTrait
     }
 
     /**
-     * @param $id
-     * @return array
+     * @param string $id
+     * @return Response
      * @throws ErrorException
      */
     public function actionDelete($id)
@@ -119,7 +115,7 @@ trait MenuItemTrait
             throw new ErrorException('Model cant be deleted');
         }
 
-        return ['success' => true];
+        return $this->redirect(\Yii::$app->request->referrer);
     }
 
     /**

@@ -8,6 +8,7 @@
 
 namespace sokyrko\yii2menu\models;
 
+use MongoDB\BSON\ObjectID;
 use yii\db\ActiveQueryInterface;
 use yii\mongodb\ActiveQuery;
 use yii\mongodb\ActiveRecord;
@@ -15,11 +16,11 @@ use yii\mongodb\ActiveRecord;
 /**
  * Class MenuItem
  * @package sokyrko\yii2menu\models
- * @property integer $id
+ * @property ObjectID $_id
  * @property string $title
  * @property string $url
- * @property integer $menu_id
- * @property integer $parent_id
+ * @property integer $menuId
+ * @property integer $parentId
  * @property integer $position
  * @property Menu $menu
  * @property MenuItem $parent
@@ -33,19 +34,35 @@ class MenuItem extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'url', 'menu_id'], 'required'],
-            ['title', 'string', 'max' => 64],
+            [['title', 'url', 'menuId'], 'required'],
+            [['title'], 'string', 'max' => 64],
             ['url', 'string', 'max' => 128],
-            [['menu_id', 'parent_id', 'position'], 'integer'],
+            [['position'], 'integer'],
+            ['parentId', 'safe'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public function attributes()
     {
-        return 'menu_items';
+        return [
+            '_id',
+            'title',
+            'url',
+            'menuId',
+            'parentId',
+            'position',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function collectionName()
+    {
+        return 'menuItems';
     }
 
     /**
@@ -53,7 +70,7 @@ class MenuItem extends ActiveRecord
      */
     public function getMenu()
     {
-        return $this->hasOne(Menu::className(), ['id' => 'menu_id']);
+        return $this->hasOne(Menu::className(), ['_id' => 'menuId']);
     }
 
     /**
@@ -61,7 +78,7 @@ class MenuItem extends ActiveRecord
      */
     public function getParent()
     {
-        return $this->hasOne(MenuItem::className(), ['id' => 'parent_id']);
+        return $this->hasOne(MenuItem::className(), ['_id' => 'parentId']);
     }
 
     /**
@@ -69,6 +86,41 @@ class MenuItem extends ActiveRecord
      */
     public function getChildren()
     {
-        return $this->hasMany(MenuItem::className(), ['parent_id' => 'id'])->orderBy(['position' => SORT_ASC]);
+        return $this->hasMany(MenuItem::className(), ['parentId' => '_id'])->orderBy(['position' => SORT_ASC]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return (string) $this->_id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (is_string($this->menuId)) {
+            $this->menuId = new ObjectID($this->menuId);
+        }
+
+        if (is_string($this->parentId)) {
+            $this->parentId = new ObjectID($this->parentId);
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        $this->menuId = (string) $this->menuId;
+        $this->parentId = (string) $this->parentId;
     }
 }
