@@ -60,9 +60,9 @@ trait MenuItemTrait
 
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
             if ($parent = $model->parentId) {
-                return $this->redirect(['menu/children', 'parentId' => $parent]);
+                return $this->redirect(['menu/children', 'parentId' => (string) $parent]);
             } else {
-                return $this->redirect(['menu/update', 'id' => $model->menuId]);
+                return $this->redirect(['menu/update', 'id' => (string) $model->menuId]);
             }
         }
 
